@@ -16,7 +16,7 @@ inquirer.prompt(
         {
             type:"input",
             message:"How do you install you app?",
-            name:"Instructions"
+            name:"installation"
  
 
         },
@@ -24,7 +24,7 @@ inquirer.prompt(
         {
             type:"input",
             message:"Instructions to be follow?",
-            name:"Instructions"
+            name:"instructions"
       
 
         },
@@ -32,7 +32,7 @@ inquirer.prompt(
         {
             type:"input",
             message:"Any Credits?",
-            name:"Instilation"
+            name:"credit"
             
 
         },
@@ -44,11 +44,11 @@ inquirer.prompt(
 
         },
         {
-            // list licesne
+            // list license
             type:"list",
             message:"What license did you use?",
-            name:"License",
-            choices: ["The MIT Licesne", "The Apache licesne", "The GPL Licesne", 'N/A']
+            name:"license",
+            choices: ["The MIT License", "The Apache license", "The GPL License", 'N/A']
             
 
         },
@@ -66,17 +66,57 @@ inquirer.prompt(
         
         }
     ]
-).then(answers =>{
-    console.log(answers.title)
-    fs.writeFileSync("./dist/README.md",
-`
-# ${answers.title}
-`
-`
-## ${answers.instalation}
-`
-    )
-})
+).then (({
+    title,
+    installation,
+    instructions,
+    credit,
+    license,
+    usage,
+    git,
+    email
+
+})=>{
+    //Template to be used
+    const template = `# ${title}
+
+![GitHub profile](https://img.shields.io/badge/Github-${git}-brightgreen)
+
+*[Installation](#installation)
+*[Usage](#usage)
+*[Credits](#credit)
+*[License](#license)
+# Installation 
+${installation} 
+## Usage
+${usage}   
+### Instructions
+${instructions}
+## Credits
+${credit}
+## License
+${license}
+
+# contact
+* Github:${git}
+* E-mail: ${email}`;
+createNewFile(title,template);
+  }
+  );
+function createNewFile(fileName, data){
+    fs.writeFile(`./dist/${fileName.toLowerCase().split(' ').join('')}.md`,data,(err)=>{
+        if (err){
+            console.log(err)
+        }
+        console.log('Your README has been generated');
+    })
+
+}
+
+
+
+
+
 
 
 
